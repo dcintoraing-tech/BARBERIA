@@ -1,0 +1,175 @@
+@import "tailwindcss";
+
+/* ───────────────────────────────────────────────────────────
+   CASA FILO · Sistema de diseño
+   Tinta / Hueso / Latón / Verde navaja / Óxido
+   ─────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-ink: #0b0b0c;
+  --color-ink-2: #121213;
+  --color-carbon: #1a1a1b;
+  --color-smoke: #2a2a2c;
+  --color-bone: #ece6da;
+  --color-bone-2: #d9d2c4;
+  --color-ash: #8c8781;
+  --color-brass: #c2a04c;
+  --color-brass-dim: #8e7437;
+  --color-navaja: #15241f;
+  --color-navaja-2: #1d3029;
+  --color-oxide: #a0402a;
+
+  --font-display: var(--font-display-family), "Helvetica Neue", Arial, sans-serif;
+  --font-accent: var(--font-accent-family), "Times New Roman", Georgia, serif;
+  --font-sans: var(--font-sans-family), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-filo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+
+  --breakpoint-xs: 26rem;
+}
+
+@layer base {
+  :root {
+    --nav-h: 76px;
+    color-scheme: dark;
+  }
+
+  * {
+    border-color: color-mix(in oklab, var(--color-bone) 12%, transparent);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    background-color: var(--color-ink);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-bone);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--color-brass);
+    color: var(--color-ink);
+  }
+
+  /* El scrollbar también es marca */
+  ::-webkit-scrollbar { width: 9px; height: 9px; }
+  ::-webkit-scrollbar-track { background: var(--color-ink); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-smoke);
+    border: 2px solid var(--color-ink);
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-brass-dim); }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brass);
+    outline-offset: 3px;
+  }
+
+  input, textarea, select, button { font: inherit; color: inherit; }
+
+  input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.4; }
+
+  /* Evita el zoom automático de iOS en los campos del formulario */
+  @supports (-webkit-touch-callout: none) {
+    input, textarea, select { font-size: 16px; }
+  }
+}
+
+@layer utilities {
+  /* Rótulos: la voz "etiqueta de taller" de la marca */
+  .label {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  /* Titular: grotesca apretada. El tracking negativo es lo que la vuelve
+     editorial en lugar de corporativa. */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 0.94;
+    letter-spacing: -0.035em;
+    font-feature-settings: "ss01";
+  }
+
+  /* Acento: la única cursiva de la casa. Nunca se usa en caja alta. */
+  .accent {
+    font-family: var(--font-accent);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.04;
+    letter-spacing: -0.005em;
+  }
+
+  .edge-x {
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--color-brass) 55%, transparent) 18%,
+      color-mix(in oklab, var(--color-brass) 55%, transparent) 82%,
+      transparent
+    );
+  }
+
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  .vignette::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      120% 90% at 50% 35%,
+      transparent 35%,
+      color-mix(in oklab, var(--color-ink) 85%, transparent) 100%
+    );
+  }
+
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
+
+  .mask-fade-r {
+    mask-image: linear-gradient(90deg, #000 85%, transparent);
+  }
+}
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-100%, 0, 0); }
+}
